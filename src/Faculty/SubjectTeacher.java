@@ -17,8 +17,8 @@ public non-sealed class SubjectTeacher extends Subject{
         return semester;
     }
 
-    public SubjectTeacher(String name, int credits, Group group, int studyYear, int semester){
-        super(name, credits);
+    public SubjectTeacher(int subjectId, String name, int credits, Group group, int studyYear, int semester){
+        super(subjectId, name, credits);
         this.group = group;
         this.studyYear = studyYear;
         this.semester = semester;

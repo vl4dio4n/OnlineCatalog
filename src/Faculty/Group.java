@@ -3,13 +3,15 @@ package Faculty;
 import java.util.List;
 import java.util.Objects;
 
-public class Group {
+public class Group implements Comparable<Group> {
+    private int groupId;
     private String name;
     private String seriesName;
     private String academicYear;
     private List<Student> students;
 
-    public Group(String name, String seriesName, String academicYear){
+    public Group(int groupId,  String name, String seriesName, String academicYear){
+        this.groupId = groupId;
         this.name = name;
         this.seriesName = seriesName;
         this.academicYear = academicYear;
@@ -18,6 +20,8 @@ public class Group {
     public void addStudent(Student student){
         students.add(student);
     }
+
+    public int getGroupId() { return groupId; }
 
     public String getName() {
         return name;
@@ -31,6 +35,14 @@ public class Group {
         return academicYear;
     }
 
+    public void setSeriesName(String seriesName) {
+        this.seriesName = seriesName;
+    }
+
+    public void setAcademicYear(String academicYear) {
+        this.academicYear = academicYear;
+    }
+
     public List<Student> getStudents() {
         return students;
     }
@@ -38,13 +50,6 @@ public class Group {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(this.name + "," + this.seriesName + "," + this.academicYear + ",\"");
-//        boolean isFirst = true;
-//        for(Student student: this.students){
-//            if(!isFirst)
-//                sb.append(",");
-//            sb.append(student.getName());
-//            isFirst = false;
-//        }
         sb.append("\"\n");
         return sb.toString();
     }
@@ -60,5 +65,9 @@ public class Group {
     @Override
     public int hashCode() {
         return Objects.hash(name, seriesName, academicYear);
+    }
+
+    public int compareTo(Group ob) {
+        return this.groupId - ob.groupId;
     }
 }

@@ -6,8 +6,8 @@ public non-sealed class SubjectStudent extends Subject{
     private int semester;
     private int mark;
 
-    public SubjectStudent(String name, int credits, Group group, int studyYear, int semester){
-        super(name, credits);
+    public SubjectStudent(int subjectId, String name, int credits, Group group, int studyYear, int semester){
+        super(subjectId, name, credits);
         this.group = group;
         this.studyYear = studyYear;
         this.semester = semester;

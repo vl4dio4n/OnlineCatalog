@@ -1,8 +1,10 @@
 package Application;
 
+import DataUtils.*;
 import Faculty.*;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -12,15 +14,35 @@ public class Application {
     private Class<? extends AppService> activeService;
     private Stack<String> navigationStack;
 
-    private Application(){
+
+    private final UsersService usersService;
+    private final SeriesService seriesService;
+    private final GroupsService groupsService;
+    private final SubjectsService subjectsService;
+    private final StudentService studentService;
+    private final AdminsService adminsService;
+    private final TeachersService teachersService;
+    private final AuditService auditService;
+
+
+    private Application(Connection connection){
         this.activeService = AppService.class;
         this.navigationStack = new Stack<String>();
         this.navigationStack.push("sign_in");
+
+        this.usersService = UsersService.getUsersService(connection);
+        this.groupsService = GroupsService.getGroupsService(connection);
+        this.seriesService = SeriesService.getSeriesService(connection);
+        this.subjectsService = SubjectsService.getSubjectsService(connection);
+        this.studentService = StudentService.getStudentService(connection);
+        this.adminsService = AdminsService.getAdminsService(connection);
+        this.teachersService = TeachersService.getTeachersService(connection);
+        this.auditService = AuditService.getInstance();
     }
 
-    public static Application getApplication(){
+    public static Application getApplication(Connection connection){
         if(application == null)
-            application = new Application();
+            application = new Application(connection);
         return application;
     }
 
@@ -29,20 +51,21 @@ public class Application {
 
         System.out.println(Colors.ANSI_BLUE + "Log In into your account" + Colors.ANSI_RESET);
         System.out.print(Colors.ANSI_PURPLE + ">>> Email: " + Colors.ANSI_RESET);
-        String email = scanner.nextLine();
+        String username = scanner.nextLine();
         System.out.print(Colors.ANSI_PURPLE + ">>> Password: " + Colors.ANSI_RESET);
         String password = scanner.nextLine();
 
-        String[] args = {email, password};
+        String[] args = {username, password};
         try {
             this.activeUser = (User) this.activeService.getMethod("authenticate", String.class, String.class).invoke(null, args);
-            this.activeUser.init();
 
             if (this.activeUser == null) {
                 System.out.println(Colors.ANSI_RED + "Wrong email or password. Try again!\n" + Colors.ANSI_RESET);
             } else {
                 System.out.println(Colors.ANSI_BLUE + "Sign In completed successfully!\n" + Colors.ANSI_RESET);
-                System.out.println(Colors.ANSI_GREEN + "Welcome, " + this.activeUser.getEmail() + "\n" + Colors.ANSI_RESET);
+                System.out.println(Colors.ANSI_GREEN + "Welcome, " + this.activeUser.getUsername() + "\n" + Colors.ANSI_RESET);
+
+                this.activeUser.init();
                 this.navigationStack.push("welcome");
 
                 if(this.activeUser instanceof Admin){
@@ -69,8 +92,8 @@ public class Application {
                 action = (String) this.activeService.getMethod(methodName, String.class, String.class).invoke(null, args);
             } else if(args.length == 3){
                 action = (String) this.activeService.getMethod(methodName, String.class, String.class, String.class).invoke(null, args);
-            } else if(args.length == 7){
-                SubjectTeacher subject = new SubjectTeacher(args[3], Integer.parseInt(args[4]), new Group(args[0], args[1], args[2]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
+            } else if(args.length == 8){
+                SubjectTeacher subject = new SubjectTeacher(-1, args[3], Integer.parseInt(args[4]), new Group(Integer.parseInt(args[7]), args[0], args[1], args[2]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
                 action = (String) this.activeService.getMethod(methodName, SubjectTeacher.class).invoke(null, subject);
             }
             this.navigationStack.push(action);
@@ -84,13 +107,14 @@ public class Application {
             String action = (String) this.activeService.getMethod(methodName, Teacher.class).invoke(null, teacher);
             this.navigationStack.push(action);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
             System.out.println(Colors.ANSI_RED + "!!! An internal error occurred. Keep Calm !!!" + Colors.ANSI_RESET);
         }
     }
 
-    private void invokeMethodStudent(String methodName, String registrationNumber){
+    private void invokeMethodStudent(String methodName, int studentId){
         try {
-            String action = (String) this.activeService.getMethod(methodName, String.class).invoke(null, registrationNumber);
+            String action = (String) this.activeService.getMethod(methodName, Integer.class).invoke(null, studentId);
             this.navigationStack.push(action);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             System.out.println(Colors.ANSI_RED + "!!! An internal error occurred. Keep Calm !!!" + Colors.ANSI_RESET);
@@ -108,6 +132,8 @@ public class Application {
 
             String currentView = this.navigationStack.peek();
 
+            this.auditService.logAction(currentView.split(",")[0]);
+
             if(currentView.equals("sign_in")) {
                 this.signIn();
             } else if(currentView.equals("welcome")){
@@ -118,15 +144,15 @@ public class Application {
                 this.invokeMethod("showSeries");
             } else if(currentView.startsWith("show-groups")){
                 String[] args = currentView.replace("show-groups,", "").split(",");
-                this.invokeMethod("showGroups", args[0], args[1]);
+                this.invokeMethod("showGroups", args[0]);
             } else if(currentView.equals("create-group")){
                 this.invokeMethod("createGroup");
             } else if(currentView.startsWith("show-students-course")){
                 String[] args = currentView.replace("show-students-course,", "").split(",");
-                this.invokeMethod("showStudentsCourse", args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+                this.invokeMethod("showStudentsCourse", args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
             } else if(currentView.startsWith("show-students")){
                 String[] args = currentView.replace("show-students,", "").split(",");
-                this.invokeMethod("showStudents", args[0], args[1], args[2]);
+                this.invokeMethod("showStudents", args[0]);
             } else if(currentView.equals("add-subject")){
                 this.invokeMethod("createSubject");
             } else if(currentView.equals("add-teacher")){
@@ -147,7 +173,7 @@ public class Application {
             } else if(currentView.equals("show-subjects")){
                 this.invokeMethodTeacher("showSubjects", (Teacher) this.activeUser);
             } else if(currentView.equals("dashboard")){
-                this.invokeMethodStudent("dashboard", ((Student) this.activeUser).getRegistrationNumber());
+                this.invokeMethodStudent("dashboard", ((Student) this.activeUser).getUserId());
             } else if(currentView.equals("back")){
                 this.navigationStack.pop();
                 this.navigationStack.pop();

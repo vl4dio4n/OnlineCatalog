@@ -10,8 +10,8 @@ public non-sealed class Teacher extends User{
     private String dob;
     private Set<SubjectTeacher> subjects;
 
-    public Teacher(String email, String password){
-        super(email, password);
+    public Teacher(int userId, String email, String password){
+        super(userId, email, password);
         this.subjects = new HashSet<>();
     }
 
@@ -62,7 +62,7 @@ public non-sealed class Teacher extends User{
                     String email = rowScanner.next();
                     String encryptedPassword = rowScanner.next();
 
-                    if(this.email.equals(email) && this.encryptedPassword.equals(encryptedPassword)) {
+                    if(this.username.equals(email) && this.encryptedPassword.equals(encryptedPassword)) {
                         this.firstName = rowScanner.next();
                         this.lastName = rowScanner.next();
                         this.dob = rowScanner.next();
@@ -81,7 +81,7 @@ public non-sealed class Teacher extends User{
                             int studyYear = Integer.parseInt(rowScanner.next());
                             int semester = Integer.parseInt(rowScanner.next());
 
-                            this.addSubject(new SubjectTeacher(subjectName, credits, new Group(groupName, seriesName, academicYear), studyYear, semester));
+                            this.addSubject(new SubjectTeacher(-1, subjectName, credits, new Group(-1, groupName, seriesName, academicYear), studyYear, semester));
                         }
                         break;
                     }
@@ -92,7 +92,7 @@ public non-sealed class Teacher extends User{
 
     @Override
     public String toString() {
-        return this.email + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "," + this.dob + "\n";
+        return this.username + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "," + this.dob + "\n";
     }
 
     @Override
@@ -100,11 +100,11 @@ public non-sealed class Teacher extends User{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teacher teacher = (Teacher) o;
-        return email.equals(teacher.email) && encryptedPassword.equals(teacher.encryptedPassword);
+        return username.equals(teacher.username) && encryptedPassword.equals(teacher.encryptedPassword);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, encryptedPassword);
+        return Objects.hash(username, encryptedPassword);
     }
 }

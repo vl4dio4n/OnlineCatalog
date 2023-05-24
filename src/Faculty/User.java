@@ -1,25 +1,29 @@
 package Faculty;
 
 import Application.PasswordEncryptionService;
+import DataUtils.UsersService;
+
+import java.sql.Connection;
 
 public sealed class User permits Admin, Teacher, Student{
-    protected String email;
+
+    protected int userId;
+    protected String username;
     protected String encryptedPassword;
 
-    public User(String email, String encryptedPassword){
-        this.email = email;
+
+    public User(int userId, String username, String encryptedPassword){
+        this.userId = userId;
+        this.username = username;
         this.encryptedPassword = encryptedPassword;
     }
 
     public void init() { };
 
-    public boolean signIn(String email, String password) {
-        String encryptedPassword = PasswordEncryptionService.encryptPassword(password);
-        return this.email.equals(email) && this.encryptedPassword.equals(encryptedPassword);
-    }
+    public int getUserId() { return userId; }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
     public String getEncryptedPassword() {

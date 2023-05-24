@@ -2,15 +2,13 @@ package Faculty;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public non-sealed class Admin extends User{
     private String firstName;
     private String lastName;
-    public Admin(String email, String password){
-        super(email, password);
+    public Admin(int userId, String email, String password){
+        super(userId, email, password);
     }
 
     public String getFirstName() {
@@ -33,7 +31,7 @@ public non-sealed class Admin extends User{
                 String email = rowScanner.next();
                 String encryptedPassword = rowScanner.next();
 
-                if(this.email.equals(email) && this.encryptedPassword.equals(encryptedPassword)){
+                if(this.username.equals(email) && this.encryptedPassword.equals(encryptedPassword)){
                     this.firstName = rowScanner.next();
                     this.lastName = rowScanner.next();
                 }
@@ -51,6 +49,6 @@ public non-sealed class Admin extends User{
 
     @Override
     public String toString() {
-        return this.email + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "\n";
+        return this.username + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "\n";
     }
 }

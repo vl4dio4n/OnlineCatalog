@@ -1,0 +1,716 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+
+-- Started on 2023-05-24 20:53:49 EEST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 212 (class 1259 OID 19840)
+-- Name: Administrators; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Administrators" (
+    admin_id integer NOT NULL,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL
+);
+
+
+ALTER TABLE public."Administrators" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 217 (class 1259 OID 19878)
+-- Name: Groups; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Groups" (
+    group_id integer NOT NULL,
+    series_id integer NOT NULL,
+    group_name character varying NOT NULL
+);
+
+
+ALTER TABLE public."Groups" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 216 (class 1259 OID 19877)
+-- Name: Groups_group_id_seq; Type: SEQUENCE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE SEQUENCE public."Groups_group_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Groups_group_id_seq" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 3448 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: Groups_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vl4dio4n
+--
+
+ALTER SEQUENCE public."Groups_group_id_seq" OWNED BY public."Groups".group_id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 19867)
+-- Name: Series; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Series" (
+    series_id integer NOT NULL,
+    series_name character varying NOT NULL,
+    academic_year character varying NOT NULL
+);
+
+
+ALTER TABLE public."Series" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 214 (class 1259 OID 19866)
+-- Name: Series_series_id_seq; Type: SEQUENCE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE SEQUENCE public."Series_series_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Series_series_id_seq" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 3449 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: Series_series_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vl4dio4n
+--
+
+ALTER SEQUENCE public."Series_series_id_seq" OWNED BY public."Series".series_id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 19902)
+-- Name: StudentGroups; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."StudentGroups" (
+    stduent_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public."StudentGroups" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 221 (class 1259 OID 19922)
+-- Name: StudentSubject; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."StudentSubject" (
+    student_id integer NOT NULL,
+    subject_id integer NOT NULL,
+    academic_year character varying NOT NULL,
+    semester integer NOT NULL,
+    mark integer DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE public."StudentSubject" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 213 (class 1259 OID 19852)
+-- Name: Students; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Students" (
+    student_id integer NOT NULL,
+    first_name character varying NOT NULL,
+    last_name character varying NOT NULL,
+    registration_number character varying NOT NULL
+);
+
+
+ALTER TABLE public."Students" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 219 (class 1259 OID 19892)
+-- Name: Subjects; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Subjects" (
+    subject_id integer NOT NULL,
+    subject_name character varying NOT NULL,
+    credits integer NOT NULL
+);
+
+
+ALTER TABLE public."Subjects" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 218 (class 1259 OID 19891)
+-- Name: Subjects_subject_id_seq; Type: SEQUENCE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE SEQUENCE public."Subjects_subject_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Subjects_subject_id_seq" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 3450 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: Subjects_subject_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vl4dio4n
+--
+
+ALTER SEQUENCE public."Subjects_subject_id_seq" OWNED BY public."Subjects".subject_id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 19939)
+-- Name: TeacherGroupSubject; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."TeacherGroupSubject" (
+    teacher_id integer NOT NULL,
+    group_id integer NOT NULL,
+    subject_id integer NOT NULL,
+    semester integer NOT NULL,
+    study_year integer NOT NULL
+);
+
+
+ALTER TABLE public."TeacherGroupSubject" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 211 (class 1259 OID 19825)
+-- Name: Teachers; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Teachers" (
+    teacher_id integer NOT NULL,
+    first_name character varying(50) NOT NULL,
+    last_name character varying(50) NOT NULL,
+    dob character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public."Teachers" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 210 (class 1259 OID 19803)
+-- Name: Users; Type: TABLE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE TABLE public."Users" (
+    user_id integer NOT NULL,
+    username character varying(50) NOT NULL,
+    password character varying(500) NOT NULL,
+    role character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public."Users" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 209 (class 1259 OID 19802)
+-- Name: Users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: vl4dio4n
+--
+
+CREATE SEQUENCE public."Users_user_id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Users_user_id_seq" OWNER TO vl4dio4n;
+
+--
+-- TOC entry 3451 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: Users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: vl4dio4n
+--
+
+ALTER SEQUENCE public."Users_user_id_seq" OWNED BY public."Users".user_id;
+
+
+--
+-- TOC entry 3248 (class 2604 OID 19881)
+-- Name: Groups group_id; Type: DEFAULT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Groups" ALTER COLUMN group_id SET DEFAULT nextval('public."Groups_group_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3247 (class 2604 OID 19870)
+-- Name: Series series_id; Type: DEFAULT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Series" ALTER COLUMN series_id SET DEFAULT nextval('public."Series_series_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3249 (class 2604 OID 19895)
+-- Name: Subjects subject_id; Type: DEFAULT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Subjects" ALTER COLUMN subject_id SET DEFAULT nextval('public."Subjects_subject_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3246 (class 2604 OID 19806)
+-- Name: Users user_id; Type: DEFAULT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Users" ALTER COLUMN user_id SET DEFAULT nextval('public."Users_user_id_seq"'::regclass);
+
+
+--
+-- TOC entry 3432 (class 0 OID 19840)
+-- Dependencies: 212
+-- Data for Name: Administrators; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Administrators" (admin_id, first_name, last_name) FROM stdin;
+1	Vlad-Ioan	Birsan
+11	Matei	Costescu
+19	andrei	tugulea
+\.
+
+
+--
+-- TOC entry 3437 (class 0 OID 19878)
+-- Dependencies: 217
+-- Data for Name: Groups; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Groups" (group_id, series_id, group_name) FROM stdin;
+1	1	251
+2	1	252
+3	3	231
+\.
+
+
+--
+-- TOC entry 3435 (class 0 OID 19867)
+-- Dependencies: 215
+-- Data for Name: Series; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Series" (series_id, series_name, academic_year) FROM stdin;
+1	25	2022-2023
+2	15	2021-2022
+3	23	2022-2023
+\.
+
+
+--
+-- TOC entry 3440 (class 0 OID 19902)
+-- Dependencies: 220
+-- Data for Name: StudentGroups; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."StudentGroups" (stduent_id, group_id) FROM stdin;
+8	1
+10	1
+16	1
+17	1
+\.
+
+
+--
+-- TOC entry 3441 (class 0 OID 19922)
+-- Dependencies: 221
+-- Data for Name: StudentSubject; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."StudentSubject" (student_id, subject_id, academic_year, semester, mark) FROM stdin;
+16	3	2022-2023	2	0
+16	4	2022-2023	2	0
+8	3	2022-2023	2	0
+10	3	2022-2023	2	0
+10	4	2022-2023	2	10
+17	3	2022-2023	2	0
+17	4	2022-2023	2	0
+17	5	2022-2023	2	0
+16	5	2022-2023	2	0
+8	5	2022-2023	2	0
+10	5	2022-2023	2	0
+8	4	2022-2023	2	10
+\.
+
+
+--
+-- TOC entry 3433 (class 0 OID 19852)
+-- Dependencies: 213
+-- Data for Name: Students; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Students" (student_id, first_name, last_name, registration_number) FROM stdin;
+8	Cristina	Timbur	530/2021
+10	Vlad-Ioan	Birsan	262/2021
+16	Eftimie	Petre	490/2021
+17	Stefan	Pitur	401/2021
+\.
+
+
+--
+-- TOC entry 3439 (class 0 OID 19892)
+-- Dependencies: 219
+-- Data for Name: Subjects; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Subjects" (subject_id, subject_name, credits) FROM stdin;
+1	FLP	5
+3	RC	6
+4	USO	6
+5	SO	6
+\.
+
+
+--
+-- TOC entry 3442 (class 0 OID 19939)
+-- Dependencies: 222
+-- Data for Name: TeacherGroupSubject; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."TeacherGroupSubject" (teacher_id, group_id, subject_id, semester, study_year) FROM stdin;
+14	1	3	2	2
+14	1	4	2	2
+18	1	5	2	2
+\.
+
+
+--
+-- TOC entry 3431 (class 0 OID 19825)
+-- Dependencies: 211
+-- Data for Name: Teachers; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Teachers" (teacher_id, first_name, last_name, dob) FROM stdin;
+14	sergiu	nisioi	01-12-1980
+18	Paul	Irofti	01-02-1973
+\.
+
+
+--
+-- TOC entry 3430 (class 0 OID 19803)
+-- Dependencies: 210
+-- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: vl4dio4n
+--
+
+COPY public."Users" (user_id, username, password, role) FROM stdin;
+1	vl4dio4n	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	admin
+8	cristina	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	student
+10	vlad	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	student
+11	matei	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	admin
+14	snisioi	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	teacher
+16	petre	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	student
+17	stefan	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	student
+18	pirofti	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	teacher
+19	andrei	3ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4	admin
+\.
+
+
+--
+-- TOC entry 3452 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: Groups_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vl4dio4n
+--
+
+SELECT pg_catalog.setval('public."Groups_group_id_seq"', 3, true);
+
+
+--
+-- TOC entry 3453 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: Series_series_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vl4dio4n
+--
+
+SELECT pg_catalog.setval('public."Series_series_id_seq"', 3, true);
+
+
+--
+-- TOC entry 3454 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: Subjects_subject_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vl4dio4n
+--
+
+SELECT pg_catalog.setval('public."Subjects_subject_id_seq"', 5, true);
+
+
+--
+-- TOC entry 3455 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: Users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: vl4dio4n
+--
+
+SELECT pg_catalog.setval('public."Users_user_id_seq"', 19, true);
+
+
+--
+-- TOC entry 3258 (class 2606 OID 19846)
+-- Name: Administrators Administrators_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Administrators"
+    ADD CONSTRAINT "Administrators_pkey" PRIMARY KEY (admin_id);
+
+
+--
+-- TOC entry 3268 (class 2606 OID 19885)
+-- Name: Groups Groups_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Groups"
+    ADD CONSTRAINT "Groups_pkey" PRIMARY KEY (group_id);
+
+
+--
+-- TOC entry 3264 (class 2606 OID 19874)
+-- Name: Series Series_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Series"
+    ADD CONSTRAINT "Series_pkey" PRIMARY KEY (series_id);
+
+
+--
+-- TOC entry 3266 (class 2606 OID 19876)
+-- Name: Series Series_series_name_academic_year_key; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Series"
+    ADD CONSTRAINT "Series_series_name_academic_year_key" UNIQUE (series_name) INCLUDE (academic_year);
+
+
+--
+-- TOC entry 3274 (class 2606 OID 19906)
+-- Name: StudentGroups StudentGroups_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentGroups"
+    ADD CONSTRAINT "StudentGroups_pkey" PRIMARY KEY (stduent_id, group_id);
+
+
+--
+-- TOC entry 3276 (class 2606 OID 19928)
+-- Name: StudentSubject StudentSubject_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentSubject"
+    ADD CONSTRAINT "StudentSubject_pkey" PRIMARY KEY (student_id, subject_id);
+
+
+--
+-- TOC entry 3260 (class 2606 OID 19858)
+-- Name: Students Students_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Students"
+    ADD CONSTRAINT "Students_pkey" PRIMARY KEY (student_id);
+
+
+--
+-- TOC entry 3262 (class 2606 OID 19860)
+-- Name: Students Students_registration_number_key; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Students"
+    ADD CONSTRAINT "Students_registration_number_key" UNIQUE (registration_number);
+
+
+--
+-- TOC entry 3270 (class 2606 OID 19899)
+-- Name: Subjects Subjects_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Subjects"
+    ADD CONSTRAINT "Subjects_pkey" PRIMARY KEY (subject_id);
+
+
+--
+-- TOC entry 3272 (class 2606 OID 19901)
+-- Name: Subjects Subjects_subject_name_key; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Subjects"
+    ADD CONSTRAINT "Subjects_subject_name_key" UNIQUE (subject_name);
+
+
+--
+-- TOC entry 3278 (class 2606 OID 19943)
+-- Name: TeacherGroupSubject TeacherGroupSubject_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."TeacherGroupSubject"
+    ADD CONSTRAINT "TeacherGroupSubject_pkey" PRIMARY KEY (teacher_id, group_id, subject_id);
+
+
+--
+-- TOC entry 3256 (class 2606 OID 19829)
+-- Name: Teachers Teachers_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Teachers"
+    ADD CONSTRAINT "Teachers_pkey" PRIMARY KEY (teacher_id);
+
+
+--
+-- TOC entry 3252 (class 2606 OID 19810)
+-- Name: Users Users_pkey; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Users"
+    ADD CONSTRAINT "Users_pkey" PRIMARY KEY (user_id);
+
+
+--
+-- TOC entry 3254 (class 2606 OID 19814)
+-- Name: Users Users_username_uq; Type: CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Users"
+    ADD CONSTRAINT "Users_username_uq" UNIQUE (username);
+
+
+--
+-- TOC entry 3280 (class 2606 OID 19847)
+-- Name: Administrators Administrators_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Administrators"
+    ADD CONSTRAINT "Administrators_admin_id_fkey" FOREIGN KEY (admin_id) REFERENCES public."Users"(user_id);
+
+
+--
+-- TOC entry 3282 (class 2606 OID 19886)
+-- Name: Groups Groups_series_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Groups"
+    ADD CONSTRAINT "Groups_series_id_fkey" FOREIGN KEY (series_id) REFERENCES public."Series"(series_id);
+
+
+--
+-- TOC entry 3284 (class 2606 OID 19917)
+-- Name: StudentGroups StudentGroups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentGroups"
+    ADD CONSTRAINT "StudentGroups_group_id_fkey" FOREIGN KEY (group_id) REFERENCES public."Groups"(group_id) NOT VALID;
+
+
+--
+-- TOC entry 3283 (class 2606 OID 19907)
+-- Name: StudentGroups StudentGroups_stduent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentGroups"
+    ADD CONSTRAINT "StudentGroups_stduent_id_fkey" FOREIGN KEY (stduent_id) REFERENCES public."Students"(student_id);
+
+
+--
+-- TOC entry 3285 (class 2606 OID 19929)
+-- Name: StudentSubject StudentSubject_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentSubject"
+    ADD CONSTRAINT "StudentSubject_student_id_fkey" FOREIGN KEY (student_id) REFERENCES public."Students"(student_id);
+
+
+--
+-- TOC entry 3286 (class 2606 OID 19934)
+-- Name: StudentSubject StudentSubject_subject_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."StudentSubject"
+    ADD CONSTRAINT "StudentSubject_subject_id_fkey" FOREIGN KEY (subject_id) REFERENCES public."Subjects"(subject_id) NOT VALID;
+
+
+--
+-- TOC entry 3281 (class 2606 OID 19861)
+-- Name: Students Students_student_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Students"
+    ADD CONSTRAINT "Students_student_id_fkey" FOREIGN KEY (student_id) REFERENCES public."Users"(user_id);
+
+
+--
+-- TOC entry 3288 (class 2606 OID 19949)
+-- Name: TeacherGroupSubject TeacherGroupSubject_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."TeacherGroupSubject"
+    ADD CONSTRAINT "TeacherGroupSubject_group_id_fkey" FOREIGN KEY (group_id) REFERENCES public."Groups"(group_id) NOT VALID;
+
+
+--
+-- TOC entry 3289 (class 2606 OID 19954)
+-- Name: TeacherGroupSubject TeacherGroupSubject_subject_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."TeacherGroupSubject"
+    ADD CONSTRAINT "TeacherGroupSubject_subject_id_fkey" FOREIGN KEY (subject_id) REFERENCES public."Subjects"(subject_id) NOT VALID;
+
+
+--
+-- TOC entry 3287 (class 2606 OID 19944)
+-- Name: TeacherGroupSubject TeacherGroupSubject_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."TeacherGroupSubject"
+    ADD CONSTRAINT "TeacherGroupSubject_teacher_id_fkey" FOREIGN KEY (teacher_id) REFERENCES public."Teachers"(teacher_id);
+
+
+--
+-- TOC entry 3279 (class 2606 OID 19830)
+-- Name: Teachers Teachers_teacher_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: vl4dio4n
+--
+
+ALTER TABLE ONLY public."Teachers"
+    ADD CONSTRAINT "Teachers_teacher_id_fkey" FOREIGN KEY (teacher_id) REFERENCES public."Users"(user_id);
+
+
+-- Completed on 2023-05-24 20:53:50 EEST
+
+--
+-- PostgreSQL database dump complete
+--
+

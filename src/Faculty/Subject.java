@@ -3,10 +3,12 @@ package Faculty;
 import java.util.Objects;
 
 public sealed class Subject permits SubjectTeacher, SubjectStudent {
+    protected int subjectId;
     protected String name;
     protected int credits;
 
-    public Subject(String name, int credits){
+    public Subject(int subjectId, String name, int credits){
+        this.subjectId = subjectId;
         this.name = name;
         this.credits = credits;
     }

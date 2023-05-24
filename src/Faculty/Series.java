@@ -1,15 +1,18 @@
 package Faculty;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Series {
+public class Series implements Comparable<Series> {
+    private int seriesId;
     private String name;
     private String academicYear;
     private Set<Group> groups;
 
-    public Series(String name, String academicYear){
+    public Series(int seriesId, String name, String academicYear){
+        this.seriesId = seriesId;
         this.name = name;
         this.academicYear = academicYear;
         this.groups = new HashSet<>();
@@ -18,6 +21,8 @@ public class Series {
     public void addGroup(Group group){
         groups.add(group);
     }
+
+    public int getSeriesId() { return seriesId; }
 
     public String getName() {
         return name;
@@ -56,5 +61,9 @@ public class Series {
         }
         sb.append("\"\n");
         return sb.toString();
+    }
+
+    public int compareTo(Series ob) {
+        return this.seriesId - ob.seriesId;
     }
 }

@@ -13,8 +13,8 @@ public non-sealed class Student extends User{
     private Group group;
     private Set<SubjectStudent> subjects;
 
-    public Student(String email, String password) {
-        super(email, password);
+    public Student(int userId, String email, String password) {
+        super(userId, email, password);
         this.subjects = new HashSet<>();
     }
 
@@ -74,7 +74,7 @@ public non-sealed class Student extends User{
 
                         String email = rowScanner.next();
                         String encryptedPassword = rowScanner.next();
-                        if(this.email.equals(email) && this.encryptedPassword.equals(encryptedPassword)){
+                        if(this.username.equals(email) && this.encryptedPassword.equals(encryptedPassword)){
                             rowScanner.next();
                             rowScanner.next();
                             this.registrationNumber = rowScanner.next();
@@ -88,7 +88,7 @@ public non-sealed class Student extends User{
 
     @Override
     public String toString() {
-        return this.email + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "," +
+        return this.username + "," + this.encryptedPassword + "," + this.firstName + "," + this.lastName + "," +
                 this.registrationNumber + "," + this.group.getName() + "," + this.group.getSeriesName() + "," + this.group.getAcademicYear() + "\n";
     }
 }
